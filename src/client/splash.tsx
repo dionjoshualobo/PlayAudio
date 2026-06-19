@@ -2,10 +2,20 @@ import './index.css';
 
 import { navigateTo } from '@devvit/web/client';
 import { context, requestExpandedMode } from '@devvit/web/client';
-import { StrictMode } from 'react';
+import { StrictMode, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 
 export const Splash = () => {
+  const [audioLink, setAudioLink] = useState('');
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (audioLink.trim()) {
+      console.log('Audio link submitted:', audioLink);
+      // TODO: Handle audio link submission
+    }
+  };
+
   return (
     <div className="relative flex min-h-screen flex-col items-center justify-center gap-4 bg-white dark:bg-gray-900">
       <img
@@ -18,21 +28,26 @@ export const Splash = () => {
           Hey {context.username ?? 'user'} 👋
         </h1>
         <p className="text-center text-base text-gray-600 dark:text-gray-300">
-          Edit{' '}
-          <span className="rounded bg-[#e5ebee] px-1 py-0.5 dark:bg-gray-700">
-            src/client/splash.tsx
-          </span>{' '}
-          to get started.
+          Enter an audio link to play
         </p>
       </div>
-      <div className="mt-5 flex items-center justify-center">
+      
+      <form onSubmit={handleSubmit} className="mt-5 flex flex-col items-center gap-3">
+        <input
+          type="text"
+          value={audioLink}
+          onChange={(e) => setAudioLink(e.target.value)}
+          placeholder="Enter audio link"
+          className="w-64 px-3 py-2 border border-gray-300 rounded"
+        />
         <button
+          type="submit"
           className="flex h-10 w-auto cursor-pointer items-center justify-center rounded-full bg-[#d93900] px-4 text-white transition-colors hover:bg-[#c23300] dark:bg-orange-600 dark:hover:bg-orange-700"
-          onClick={(e) => requestExpandedMode(e.nativeEvent, 'game')}
         >
-          Tap to Start
+          Submit
         </button>
-      </div>
+      </form>
+
       <footer className="absolute bottom-4 left-1/2 flex -translate-x-1/2 gap-3 text-[0.8em] text-gray-600 dark:text-gray-400">
         <button
           className="cursor-pointer hover:text-gray-900 dark:hover:text-white transition-colors"
